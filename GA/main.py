@@ -10,7 +10,7 @@ def eval_func(individual):
    target_sum = 15
    return len(individual) - abs(sum(individual) - target_sum),
 
-# Now, create the toolbox with the right parameters −
+# Create the toolbox with the right parameters −
 
 def create_toolbox(num_bits):
    creator.create("FitnessMax", base.Fitness, weights=(1.0,))
@@ -25,7 +25,7 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("evaluate", eval_func)
 
-# Now, register the crossover operator −
+# Register the crossover operator −
 
 toolbox.register("mate", tools.cxTwoPoint)
 
@@ -33,7 +33,7 @@ toolbox.register("mate", tools.cxTwoPoint)
 
 toolbox.register("mutate", tools.mutFlipBit, indpb = 0.05)
 
-#Define the operator for breeding −
+# Define the operator for breeding −
 
 toolbox.register("select", tools.selTournament, tournsize = 3)
 return toolbox
@@ -62,7 +62,7 @@ for g in range(num_generations):
 
 offspring = toolbox.select(population, len(population))
 
-# Now, clone the selected individuals −
+# Clone the selected individuals −
 
 offspring = list(map(toolbox.clone, offspring))
 
@@ -77,7 +77,7 @@ for child1, child2 in zip(offspring[::2], offspring[1::2]):
 del child1.fitness.values
 del child2.fitness.values
 
-# Now, apply mutation −
+# Apply mutation −
 
 for mutant in offspring:
    if random.random() < probab_mutating:
@@ -92,7 +92,7 @@ for ind, fit in zip(invalid_ind, fitnesses):
    ind.fitness.values = fit
 print('Evaluated', len(invalid_ind), 'individuals')
 
-# Now, replace population with next generation individual −
+# Replace population with next generation individual −
 
 population[:] = offspring
 
