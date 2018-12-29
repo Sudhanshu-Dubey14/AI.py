@@ -1,4 +1,4 @@
-# Import the necessary packages as shown −
+# Import the necessary packages as shown
 
 import random
 from deap import base, creator, tools
@@ -10,7 +10,7 @@ def eval_func(individual):
    target_sum = 15
    return len(individual) - abs(sum(individual) - target_sum),
 
-# Create the toolbox with the right parameters −
+# Create the toolbox with the right parameters
 
 def create_toolbox(num_bits):
    creator.create("FitnessMax", base.Fitness, weights=(1.0,))
@@ -21,19 +21,19 @@ toolbox.register("individual", tools.initRepeat, creator.Individual,
    toolbox.attr_bool, num_bits)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
-# Register the evaluation operator −
+# Register the evaluation operator
 
 toolbox.register("evaluate", eval_func)
 
-# Register the crossover operator −
+# Register the crossover operator
 
 toolbox.register("mate", tools.cxTwoPoint)
 
-# Register a mutation operator −
+# Register a mutation operator
 
 toolbox.register("mutate", tools.mutFlipBit, indpb = 0.05)
 
-# Define the operator for breeding −
+# Define the operator for breeding
 
 toolbox.register("select", tools.selTournament, tournsize = 3)
 return toolbox
@@ -46,27 +46,27 @@ if __name__ == "__main__":
    num_generations = 10
    print('\nEvolution process starts')
 
-# Evaluate the entire population −
+# Evaluate the entire population
 
 fitnesses = list(map(toolbox.evaluate, population))
 for ind, fit in zip(population, fitnesses):
    ind.fitness.values = fit
 print('\nEvaluated', len(population), 'individuals')
 
-# Create and iterate through generations −
+# Create and iterate through generations
 
 for g in range(num_generations):
    print("\n- Generation", g)
 
-# Selecting the next generation individuals −
+# Selecting the next generation individuals
 
 offspring = toolbox.select(population, len(population))
 
-# Clone the selected individuals −
+# Clone the selected individuals
 
 offspring = list(map(toolbox.clone, offspring))
 
-# Apply crossover and mutation on the offspring −
+# Apply crossover and mutation on the offspring
 
 for child1, child2 in zip(offspring[::2], offspring[1::2]):
    if random.random() < probab_crossing:
@@ -74,17 +74,17 @@ for child1, child2 in zip(offspring[::2], offspring[1::2]):
 
 # Delete the fitness value of child
 
-del child1.fitness.values
+del child1.fitness.values 
 del child2.fitness.values
 
-# Apply mutation −
+# Apply mutation
 
 for mutant in offspring:
    if random.random() < probab_mutating:
    toolbox.mutate(mutant)
    del mutant.fitness.values
 
-# Evaluate the individuals with an invalid fitness −
+# Evaluate the individuals with an invalid fitness
 
 invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
 fitnesses = map(toolbox.evaluate, invalid_ind)
@@ -92,11 +92,11 @@ for ind, fit in zip(invalid_ind, fitnesses):
    ind.fitness.values = fit
 print('Evaluated', len(invalid_ind), 'individuals')
 
-# Replace population with next generation individual −
+# Replace population with next generation individual
 
 population[:] = offspring
 
-# Print the statistics for the current generations −
+# Print the statistics for the current generations
 
 fits = [ind.fitness.values[0] for ind in population]
 length = len(population)
@@ -108,7 +108,7 @@ print('Average =', round(mean, 2), ', Standard deviation =',
 round(std, 2))
 print("\n- Evolution ends")
 
-# Print the final output −
+# Print the final output
 
    best_ind = tools.selBest(population, 1)[0]
    print('\nBest individual:\n', best_ind)
